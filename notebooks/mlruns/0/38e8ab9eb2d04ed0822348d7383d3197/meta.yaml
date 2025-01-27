@@ -1,0 +1,15 @@
+artifact_uri: file:///d:/Program/ML_in_Production/Final%20Project/tweet_sentiment_analysis/tweet-sentiments-analysis/notebooks/mlruns/0/38e8ab9eb2d04ed0822348d7383d3197/artifacts
+end_time: 1738009080973
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 38e8ab9eb2d04ed0822348d7383d3197
+run_name: BernoulliNB
+run_uuid: 38e8ab9eb2d04ed0822348d7383d3197
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1738009072130
+status: 4
+tags: []
+user_id: chris
