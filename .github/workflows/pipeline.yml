@@ -73,7 +73,7 @@ jobs:
       working-directory: frontend
       run: |
         npm install cypress --save-dev
-        npx cypress run --browser edge
+        npx cypress run
 
     - name: Push to production branch
       if: github.ref == 'refs/heads/staging' && success()
