@@ -64,7 +64,6 @@ jobs:
     - name: Run e2e tests
       working-directory: frontend
       run: |
-        navigate to : cd frontend 
         npm install cypress --save-dev
         npx cypress run --browser edge
 
