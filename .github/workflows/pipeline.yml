@@ -67,6 +67,20 @@ jobs:
         npm install cypress --save-dev
         npx cypress run --browser edge
 
+    - name: Start Frontend Server
+      working-directory: frontend
+      run: |
+        npm install
+        npm start &
+      env:
+        CI: true
+
+    - name: Run e2e tests
+      working-directory: frontend
+      run: |
+        npm install cypress --save-dev
+        npx cypress run --browser edge
+
     - name: Push to production branch
       if: github.ref == 'refs/heads/staging' && success()
       run: |
