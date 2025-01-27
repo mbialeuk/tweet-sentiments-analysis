@@ -11,6 +11,7 @@ on:
       - main
 
 jobs:
+  # build and test on pull request to dev
   build-and-test:
     runs-on: ubuntu-latest
 
@@ -68,21 +69,18 @@ jobs:
         pip install -r requirements.txt
         python app.py &
       env:
-        FLASK_ENV: development
+        BASE_URL: http://127.0.0.1:5000
 
     - name: Start Frontend Server
       working-directory: frontend
       run: |
         npm install
         npm start &
-      env:
-        CI: true
+        npx wait-on http://localhost:3000
 
-    - name: Run e2e tests
+    - name: Run e2e tests (cypress)
       working-directory: frontend
-      run: |
-        npm install cypress --save-dev
-        npx cypress run
+      run: npx cypress run --browser chrome
 
     - name: Push to production branch
       if: github.ref == 'refs/heads/staging' && success()
@@ -107,4 +105,4 @@ jobs:
 
     - name: Deploy to production
       run: |
-        echo "Deployment step here, e.g., AWS, Kubernetes, etc."
+        echo "Deployment to production server or cloud service. e.g., AWS, Kubernetes, etc."
