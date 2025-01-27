@@ -61,6 +61,14 @@ jobs:
     - name: Run unit tests
       run: pytest tests/test_unit/
 
+    - name: Start Frontend Server
+      working-directory: frontend
+      run: |
+        npm install
+        npm start &
+      env:
+        CI: true
+
     - name: Run e2e tests
       working-directory: frontend
       run: |
