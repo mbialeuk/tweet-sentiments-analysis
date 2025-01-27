@@ -84,5 +84,3 @@ pytest tests/test_integration/
 - For any issues or questions, please feel free to open an issue in this repository.
 
 --- 
-
-This updated README provides a clearer structure, improves formatting, and makes the instructions more user-friendly. Let me know if you need further adjustments!
