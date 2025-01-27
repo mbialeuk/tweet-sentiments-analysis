@@ -24,7 +24,6 @@ def predict():
     text_vectorized = vectoriser.transform([text])
     # Prédiction
     prediction = model.predict(text_vectorized)[0]
-    #sentiment = 'Positive' if prediction > 0.5 else 'Negative'
     if prediction > 0.5:
         sentiment = 'Positive'
     elif prediction < 0.5:
