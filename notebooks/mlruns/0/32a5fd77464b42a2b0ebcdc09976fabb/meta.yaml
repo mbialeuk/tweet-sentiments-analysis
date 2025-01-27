@@ -1,0 +1,15 @@
+artifact_uri: file:///d:/Program/ML_in_Production/Final%20Project/tweet_sentiment_analysis/tweet-sentiments-analysis/notebooks/mlruns/0/32a5fd77464b42a2b0ebcdc09976fabb/artifacts
+end_time: 1737947989359
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 32a5fd77464b42a2b0ebcdc09976fabb
+run_name: LogisticRegression
+run_uuid: 32a5fd77464b42a2b0ebcdc09976fabb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1737947982914
+status: 3
+tags: []
+user_id: chris
