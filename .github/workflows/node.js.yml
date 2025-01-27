@@ -1,0 +1,74 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - dev
+  push:
+    branches:
+      - dev
+      - staging
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install dvc[gs] mlflow
+
+    - name: Run integration tests
+      run: pytest tests/test_integration/
+
+    - name: Push to staging branch
+      if: github.ref == 'refs/heads/dev' && success()
+      run: |
+        git checkout -b staging
+        git push origin staging
+
+  staging:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run all tests
+      run: pytest tests/
+
+    - name: Push to production branch
+      if: github.ref == 'refs/heads/staging' && success()
+      run: |
+        git checkout -b main
+        git push origin main
+
+  production:
+    needs: staging
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: |
+        docker build -t sentiment-analyzer .
+        docker tag sentiment-analyzer:latest <DOCKERHUB_USERNAME>/sentiment-analyzer:latest
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker push <DOCKERHUB_USERNAME>/sentiment-analyzer:latest
+
+    - name: Deploy to production
+      run: |
+        echo "Deployment step here, e.g., AWS, Kubernetes, etc."
