@@ -61,6 +61,15 @@ jobs:
     - name: Run unit tests
       run: pytest tests/test_unit/
 
+    - name: Start Backend Server
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+        python app.py &
+      env:
+        FLASK_ENV: development
+
     - name: Start Frontend Server
       working-directory: frontend
       run: |
