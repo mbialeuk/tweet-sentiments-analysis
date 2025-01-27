@@ -45,8 +45,27 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Run all tests
-      run: pytest tests/
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install dvc[gs] mlflow
+
+    - name: Run integration tests
+      run: pytest tests/test_integration/
+
+    - name: Run unit tests
+      run: pytest tests/test_unit/
+
+    - name: Run e2e tests
+      run: |
+        navigate to : cd frontend 
+        npm install cypress --save-dev
+        npx cypress run --browser edge
 
     - name: Push to production branch
       if: github.ref == 'refs/heads/staging' && success()
