@@ -26,7 +26,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install backend dependancy
-      working-directory: notebook
+      working-directory: notebooks
       run: |
         python -m venv .venv
         source .venv/bin/activate
@@ -35,7 +35,7 @@ jobs:
 
      # Démarrer le backend
     - name: Start API serve
-      working-directory: notebook
+      working-directory: notebooks
       run: |
         source .venv/bin/activate
         python app.py &
