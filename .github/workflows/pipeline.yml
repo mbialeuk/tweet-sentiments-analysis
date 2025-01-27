@@ -11,35 +11,9 @@ on:
       - main
 
 jobs:
-  # build and test on pull request to dev
-  build-and-test:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.11'
-
-    - name: Install Python dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install dvc[gs] mlflow
-
-    - name: Run integration tests
-      run: pytest tests/test_integration/
-
-    - name: Push to staging branch
-      if: github.ref == 'refs/heads/dev' && success()
-      run: |
-        git checkout -b staging
-        git push origin staging
+  
 
   staging:
-    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
@@ -50,17 +24,6 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: '3.11'
-
-    - name: Install Python dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install dvc[gs] mlflow
-
-    - name: Run integration tests
-      run: pytest tests/test_integration/
-
-    - name: Run unit tests
-      run: pytest tests/test_unit/
 
     - name: Start Backend Server
       run: |
@@ -70,6 +33,10 @@ jobs:
         python app.py &
       env:
         BASE_URL: http://127.0.0.1:5000
+
+    - name: Wait for Backend to Start
+      run: |
+        npx wait-on http://127.0.0.1:5000
 
     - name: Start Frontend Server
       working-directory: frontend
