@@ -25,18 +25,23 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Start Backend Server
+    - name: Install backend dependancy
+      working-directory: notebook
       run: |
-        python -m venv venv
-        source venv/bin/activate
+        python -m venv .venv
+        source .venv/bin/activate
         pip install -r requirements.txt
+      
+
+     # Démarrer le backend
+    - name: Start API serve
+      working-directory: notebook
+      run: |
+        source .venv/bin/activate
         python app.py &
       env:
-        BASE_URL: http://127.0.0.1:5000
+        BASE_URL: http://127.0.0.1:5000        
 
-    - name: Wait for Backend to Start
-      run: |
-        npx wait-on http://127.0.0.1:5000
 
     - name: Start Frontend Server
       working-directory: frontend
