@@ -71,10 +71,6 @@ jobs:
       env:
         BASE_URL: http://127.0.0.1:5000
 
-    - name: Wait for Backend to Start
-      run: |
-        npx wait-on http://127.0.0.1:5000
-
     - name: Start Frontend Server
       working-directory: frontend
       run: |
