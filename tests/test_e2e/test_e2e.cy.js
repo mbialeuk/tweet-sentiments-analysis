@@ -7,6 +7,6 @@ describe('Sentiment Analysis E2E Test', () => {
         cy.get('textarea').type('I love this product!'); 
         cy.get('#analyze-button').click();
   
-      cy.contains('Sentiment: Positive', { timeout: 10000 }).should('exist');
+      cy.contains('Sentiment: Positive').should('be.visible');
     });
   });
