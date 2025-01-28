@@ -61,12 +61,6 @@ jobs:
         source venv/bin/activate
         pip install -r requirements.txt
 
-    - name: Run integration tests
-      run: pytest tests/test_integration/
-
-    - name: Run unit tests
-      run: pytest tests/test_unit/
-
     - name: Start API Server
       working-directory: notebooks
       run: |
@@ -92,6 +86,12 @@ jobs:
         npm start &
         npx wait-on http://localhost:3000
 
+    - name: Run integration tests
+      run: pytest tests/test_integration/
+
+    - name: Run unit tests
+      run: pytest tests/test_unit/
+      
     # run cypress tests
     - name: Run e2e tests (cypress)
       working-directory: frontend
