@@ -27,6 +27,11 @@ jobs:
       with:
         python-version: '3.11'
 
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install dvc[gs] mlflow
+
     - name: Run integration tests
       run: pytest tests/test_integration/
 
