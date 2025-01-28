@@ -1,65 +1,133 @@
-# Tweet sentiment analysis
+---
 
-A machine learning project to predict the sentiment behind a given sentence.
+# Sentiment Analysis with CI/CD Pipeline
 
-## Prerequisites
-
-1. **Install Python dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Install Node.js dependencies** (for end-to-end tests):
-   ```bash
-   cd frontend
-   npm install
-   ```
+This project is designed to perform sentiment analysis using machine learning. It includes a backend API (Flask), a frontend (React), and a complete CI/CD pipeline for building, testing, and deploying the application.
 
 ---
 
-## How to Run the Application
+## Prerequisites
 
-1. **Start the backend server**:
-   ```bash
-   python backend/app.py
-   ```
+### **1. Clone the repository**
+```bash
+git clone https://github.com/<username>/sentiment-analyzer.git
+cd sentiment-analyzer
+```
 
-2. **Start the frontend server**:
-   ```bash
-   cd frontend
-   npm start
-   ```
+### **2. Install required dependencies**
+
+#### For the backend:
+```bash
+pip install -r requirements.txt
+```
+
+#### For the frontend:
+```bash
+cd frontend
+npm install
+```
+
+### **3. Docker Installation**
+Ensure Docker and Docker Compose are installed on your system:
+- [Docker Installation Guide](https://docs.docker.com/get-docker/)
+- [Docker Compose Guide](https://docs.docker.com/compose/install/)
+
+---
+
+## How to Run the Application Locally
+
+### **1. Start the backend server**
+```bash
+cd notebooks
+python app.py
+```
+
+### **2. Start the frontend server**
+```bash
+cd frontend
+npm start
+```
+
+The application should now be accessible at [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Running with Docker
+
+### **1. Build and run the containers**
+```bash
+docker-compose up --build
+```
+
+### **2. Verify the services**
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend**: [http://localhost:5000](http://localhost:5000)
+
+### **3. Stop the containers**
+```bash
+docker-compose down
+```
+
+---
+
+## CI/CD Pipeline
+
+This project uses **GitHub Actions** to automate testing and deployment. Below are the key steps in the pipeline:
+
+### **1. Pull Request to `dev` Branch**
+- **Run integration tests** for the backend.
+- If successful, push the changes to the `staging` branch.
+
+### **2. Push to `staging` Branch**
+- Install backend and frontend dependencies.
+- Start the backend and frontend servers.
+- **Run unit tests** for the backend.
+- **Run end-to-end (E2E) tests** with Cypress.
+- If all tests pass, push the changes to the `main` branch.
+
+### **3. Push to `main` Branch**
+- Build Docker images for the backend and frontend.
+- Push the Docker images to DockerHub.
+- Deploy the application to the production environment.
 
 ---
 
 ## Running Tests
 
-### Unit Tests
-Run unit tests for backend logic:
+### **Unit Tests**
+To test individual components of the backend:
 ```bash
 pytest tests/test_unit/
 ```
 
-### Integration Tests
-Run integration tests to ensure components work together:
+### **Integration Tests**
+To ensure components interact as expected:
 ```bash
 pytest tests/test_integration/
 ```
 
-### End-to-End Tests
-1. Navigate to the `frontend` directory:
+### **End-to-End Tests**
+To validate the entire application workflow:
+```bash
+cd frontend
+npx cypress run
+```
+
+---
+
+## Deployment
+
+The CI/CD pipeline includes steps to build Docker images and deploy them to a production server or cloud platform (e.g., AWS, Kubernetes, Azure). To deploy manually:
+1. **Build and push backend Docker image**:
    ```bash
-   cd frontend
+   docker build -t <dockerhub_username>/sentiment-analyzer_backend:latest notebooks/
+   docker push <dockerhub_username>/sentiment-analyzer_backend:latest
    ```
 
-2. Install Cypress (if not already installed):
+2. **Build and push frontend Docker image**:
    ```bash
-   npm install cypress --save-dev
-   ```
-
-3. Run Cypress tests in the Edge browser:
-   ```bash
-   npx cypress run --browser edge
+   docker build -t <dockerhub_username>/sentiment-analyzer_frontend:latest frontend/
+   docker push <dockerhub_username>/sentiment-analyzer_frontend:latest
    ```
 
 ---
@@ -71,16 +139,25 @@ pytest tests/test_integration/
    mlflow ui
    ```
 
-2. **Access the MLFlow interface**:
-   Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your web browser.
-
-   - View logged metrics, parameters, and models for all experiments.
+2. **Access MLFlow**:
+   Open [http://127.0.0.1:5000](http://127.0.0.1:5000) to view experiments, metrics, and model artifacts.
 
 ---
 
-## Additional Notes
+## Troubleshooting
 
-- Ensure all dependencies are installed before running the application or tests.
-- For any issues or questions, please feel free to open an issue in this repository.
+1. **Backend/Frontend not starting**:
+   - Check the logs:
+     ```bash
+     docker-compose logs backend
+     docker-compose logs frontend
+     ```
 
---- 
+2. **Cypress tests failing**:
+   - Ensure the backend and frontend are running before starting the tests.
+   - Debug Cypress interactively:
+     ```bash
+     npx cypress open
+     ```
+
+---
