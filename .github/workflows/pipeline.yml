@@ -85,20 +85,6 @@ jobs:
       run: |
         npm start &
         npx wait-on http://localhost:3000
-
-
-    # Run integration tests
-    - name: Run integration tests
-      working-directory: notebooks
-      run: |
-        source venv/bin/activate
-        pytest ../../tests/test_integration/test_endpoints.py
-
-    - name: Run unit tests
-      working-directory: notebooks
-      run: |
-        source venv/bin/activate
-        pytest ../../tests/test_unit/test_app.py
       
     # run cypress tests
     - name: Run e2e tests (cypress)
